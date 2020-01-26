@@ -1,8 +1,4 @@
 /.idea/*
-/wenv/*
-/lenv/*
-/envl/*
-/envw/*
 /env/*
 
 # Django #
