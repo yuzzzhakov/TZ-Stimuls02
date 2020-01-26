@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Dog's Shelter</title>
+</head>
+
+<body>
+
+    <h3>Dogs in shelter:</h3>
+
+    {% for dog in dogs %}
+        Name: {{ dog.name }}<br>
+        Breed: {{ dog.breed }}<br>
+        Date of Birth: {{ dog.date_of_birth|date:"F d, Y"  }}<br>
+        Color: {{ dog.color }}<br>
+        Guardian: {{ dog.guardian.name }}<br>
+        <br>
+    {% endfor %}
+</body>
+</html>
