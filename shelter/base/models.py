@@ -1,5 +1,4 @@
 from django.db import models
-from PIL import Image
 from django.utils import timezone
 
 
@@ -10,22 +9,12 @@ class Dog(models.Model):
     color = models.CharField(max_length=15)
     GENDER_CHOICES = [('M', 'Male'), ('F', 'Female')]
     gender = models.CharField(choices=GENDER_CHOICES, max_length=1)
-    image = models.ImageField(default='default.jpg', upload_to='dog_pics')
     description = models.TextField(blank=True)
     guardian = models.ForeignKey('Guardian', blank=True, null=True, on_delete=models.SET_NULL)
+    fixed = models.BooleanField(default=True)
 
     def __str__(self):
         return f'{self.name} (Dog)'
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-        img = Image.open(self.image.path)
-
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.image.path)
 
 
 class Guardian(models.Model):
@@ -34,12 +23,18 @@ class Guardian(models.Model):
     email = models.EmailField()
     phone = models.IntegerField()
 
+    def __str__(self):
+        return f'{self.name} (Guardian)'
+
 
 class Payment(models.Model):
     sum = models.FloatField()
     currency = models.CharField(max_length=5)
     datetime = models.DateTimeField(default=timezone.now)
     payer = models.TextField(blank=True)
-    purpose = models.ManyToManyField(Dog)
+    purpose = models.ManyToManyField(Dog, blank=True)
+
+    def __str__(self):
+        return f'{self.sum} {self.currency}'
 
 

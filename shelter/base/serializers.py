@@ -1,21 +1,30 @@
-from rest_framework.serializers import ModelSerializer
-from .models import *
+from rest_framework import serializers
+from .models import Dog, Guardian, Payment
 
 
-class DogSerializer(ModelSerializer):
+class DogSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField('get_full_name')
+
+    def get_full_name(self, dog):
+        return dog.name + ' ' + dog.breed
+
     class Meta:
         model = Dog
-        fields = ['name', 'date_of_birth', 'breed', 'guardian']
+        fields = '__all__'
 
 
-class GuardianSerializer(ModelSerializer):
+class GuardianSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField('get_full_name')
+
+    def get_full_name(self, guardian):
+        return guardian.name + ' ' + guardian.surname
+
     class Meta:
         model = Guardian
-        fields = ['name', 'surname', 'email', 'phone']
+        fields = '__all__'
 
 
-class PaymentSerializer(ModelSerializer):
+class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
-        fields = ['sum', 'currency', 'purpose']
-
+        fields = '__all__'
